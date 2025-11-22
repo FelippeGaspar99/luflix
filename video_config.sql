@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS video_config (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    video_url VARCHAR(500) NOT NULL,
+    poster_url VARCHAR(500) NULL
+);

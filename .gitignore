@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.env
+.env.*
+*.env
+*.zip
+*.mp4
+*.mov
+*.avi
+*.mkv
+.DS_Store

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Google Drive Embed</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0f172a;
+            font-family: system-ui;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .video-wrapper {
+            aspect-ratio: 16/9;
+            width: 100%;
+            background: black;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teste de Embed do Google Drive</h1>
+        
+        <div class="video-wrapper">
+            <iframe
+                src="https://drive.google.com/file/d/1D_hF3ueyW-YA9v25BU2d_NIyDk5zfYBY/preview"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                frameborder="0"
+            ></iframe>
+        </div>
+
+        <div class="info">
+            <p><strong>URL do iframe:</strong></p>
+            <code>https://drive.google.com/file/d/1D_hF3ueyW-YA9v25BU2d_NIyDk5zfYBY/preview</code>
+            
+            <p style="margin-top: 15px;"><strong>Se você ver uma tela preta acima:</strong></p>
+            <ul>
+                <li>Verifique as permissões do arquivo no Google Drive (deve estar como "Qualquer pessoa com o link")</li>
+                <li>Tente abrir a URL do preview diretamente no navegador</li>
+                <li>Alguns arquivos no Google Drive não permitem embed por política de segurança</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
