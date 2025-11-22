@@ -10,70 +10,81 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const driveUrl = `https://drive.google.com/uc?export=download&id=${videoId}`;
+    const driveUrl =
+      "https://drive.google.com/uc?export=download&id=" + videoId;
 
-// Primeira tentativa
-let response = await fetch(driveUrl, {
-    method: "GET",
-    headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    },
-});
+    let response = await fetch(driveUrl, {
+      method: "GET",
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      },
+    });
 
-// Verifica se é a página de aviso de vírus (comum em arquivos grandes)
-// O Google retorna 200 OK mas com content-type text/html e um cookie de confirmação
-const contentType = response.headers.get("Content-Type");
+    const contentType = response.headers.get("Content-Type");
 
-if (contentType?.includes("text/html")) {
-    console.log("Proxy: Recebido HTML em vez de vídeo. Tentando contornar aviso de vírus...");
+    if (contentType?.includes("text/html")) {
+      console.log(
+        "Proxy: Recebido HTML em vez de vídeo. Tentando contornar aviso de vírus..."
+      );
 
-    // Tenta extrair o cookie de confirmação dos headers set-cookie
-    // Nota: fetch API padrão pode esconder set-cookie, mas vamos tentar pegar o link de confirmação do corpo
-    const text = await response.text();
+      const text = await response.text();
+      const confirmMatch = text.match(
+        /href="(\/uc\?export=download[^"]+)"/
+      );
 
-    // Procura pelo link de confirmação no HTML: href="/uc?export=download&id=...&confirm=..."
-    const confirmMatch = text.match(/href="(\/uc\?export=download[^"]+)"/);
+      if (confirmMatch) {
+        const confirmUrl = `https://drive.google.com${confirmMatch[1].replace(
+          /&amp;/g,
+          "&"
+        )}`;
 
-    if (confirmMatch) {
-        const confirmUrl = `https://drive.google.com${confirmMatch[1].replace(/&amp;/g, '&')}`;
-        console.log("Proxy: Link de confirmação encontrado. Redirecionando...");
+        console.log(
+          "Proxy: Link de confirmação encontrado. Redirecionando..."
+        );
 
         response = await fetch(confirmUrl, {
-            method: "GET",
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-            },
+          method: "GET",
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+          },
         });
-    } else {
-        console.error("Proxy: Não foi possível encontrar link de confirmação de vírus.");
+      } else {
+        console.error(
+          "Proxy: Não foi possível encontrar link de confirmação de vírus."
+        );
+      }
     }
-}
 
-if (!response.ok) {
-    console.error(`Google Drive returned ${response.status} ${response.statusText}`);
-    return new NextResponse(`Failed to fetch video from Google Drive: ${response.statusText}`, { status: response.status });
-}
+    if (!response.ok) {
+      console.error(
+        `Google Drive returned ${response.status} ${response.statusText}`
+      );
+      return new NextResponse(
+        `Failed to fetch video from Google Drive: ${response.statusText}`,
+        { status: response.status }
+      );
+    }
 
-// Prepara os headers para a resposta
-const headers = new Headers();
-const finalContentType = response.headers.get("Content-Type");
-const contentLength = response.headers.get("Content-Length");
+    const headers = new Headers();
+    const finalContentType = response.headers.get("Content-Type");
+    const contentLength = response.headers.get("Content-Length");
 
-if (finalContentType) headers.set("Content-Type", finalContentType);
-if (contentLength) headers.set("Content-Length", contentLength);
+    if (finalContentType) headers.set("Content-Type", finalContentType);
+    if (contentLength) headers.set("Content-Length", contentLength);
 
-headers.set("Accept-Ranges", "bytes");
-headers.set("Cache-Control", "public, max-age=3600");
-headers.set("Access-Control-Allow-Origin", "*");
+    headers.set("Accept-Ranges", "bytes");
+    headers.set("Cache-Control", "public, max-age=3600");
+    headers.set("Access-Control-Allow-Origin", "*");
 
-return new NextResponse(response.body, {
-    status: 200,
-    headers,
-});
-
+    return new NextResponse(response.body, {
+      status: 200,
+      headers,
+    });
   } catch (error) {
     console.error("Error proxying video:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
-}
+  }
 }
 ```
