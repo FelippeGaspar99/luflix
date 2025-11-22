@@ -21,7 +21,7 @@ export function DashboardShell({ role, children }: DashboardShellProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#05070e] to-[#050409] text-slate-100">
+    <div className="min-h-screen w-full overflow-hidden bg-gradient-to-b from-[#05070e] to-[#050409] text-slate-100">
       <header className="sticky top-0 z-30 bg-gradient-to-b from-[#05070e]/90 to-transparent backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-6">
           <Logo />
