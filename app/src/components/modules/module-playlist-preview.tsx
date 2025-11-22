@@ -123,44 +123,46 @@ export function ModulePlaylistPreview({ videos, users, progressMap }: PlaylistPr
       )}
 
       <div className="overflow-hidden rounded-2xl border border-slate-800/50">
-        <table className="min-w-full text-left text-sm text-slate-300">
-          <thead className="bg-slate-900/60 text-xs uppercase tracking-[0.3em] text-slate-500">
-            <tr>
-              <th className="px-4 py-3">#</th>
-              <th className="px-4 py-3">Vídeo</th>
-              <th className="px-4 py-3">Progresso</th>
-              <th className="px-4 py-3">Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((video) => (
-              <tr key={video.id} className="border-t border-slate-800/40">
-                <td className="px-4 py-3">{video.index + 1}</td>
-                <td className="px-4 py-3">
-                  <p className="font-semibold text-white">{video.title}</p>
-                  <p className="text-xs text-slate-500">{video.description}</p>
-                </td>
-                <td className="px-4 py-3 text-xs">
-                  {selectedUser ? (
-                    <span
-                      className={`rounded-full px-3 py-1 font-semibold ${video.completed ? 'bg-emerald-500/20 text-emerald-200' : 'bg-slate-800/70 text-slate-300'
-                        }`}
-                    >
-                      {video.completed ? 'Concluído' : `${video.progress}%`}
-                    </span>
-                  ) : (
-                    '—'
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  <Button type="button" variant="secondary" onClick={() => handleSelectVideo(video.index)}>
-                    Reproduzir
-                  </Button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left text-sm text-slate-300">
+            <thead className="bg-slate-900/60 text-xs uppercase tracking-[0.3em] text-slate-500">
+              <tr>
+                <th className="whitespace-nowrap px-4 py-3">#</th>
+                <th className="whitespace-nowrap px-4 py-3">Vídeo</th>
+                <th className="whitespace-nowrap px-4 py-3">Progresso</th>
+                <th className="whitespace-nowrap px-4 py-3">Ação</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((video) => (
+                <tr key={video.id} className="border-t border-slate-800/40">
+                  <td className="whitespace-nowrap px-4 py-3">{video.index + 1}</td>
+                  <td className="min-w-[200px] px-4 py-3">
+                    <p className="font-semibold text-white">{video.title}</p>
+                    <p className="line-clamp-1 text-xs text-slate-500">{video.description}</p>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3 text-xs">
+                    {selectedUser ? (
+                      <span
+                        className={`rounded-full px-3 py-1 font-semibold ${video.completed ? 'bg-emerald-500/20 text-emerald-200' : 'bg-slate-800/70 text-slate-300'
+                          }`}
+                      >
+                        {video.completed ? 'Concluído' : `${video.progress}%`}
+                      </span>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <Button type="button" variant="secondary" onClick={() => handleSelectVideo(video.index)}>
+                      Reproduzir
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
