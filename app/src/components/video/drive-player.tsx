@@ -29,7 +29,7 @@ export function DrivePlayer({ url }: DrivePlayerProps) {
     if (!embedUrl) return null;
 
     return (
-        <div className="relative w-full pb-[56.25%] h-0 rounded-3xl overflow-hidden bg-black shadow-2xl">
+        <div className="relative h-0 w-full overflow-hidden rounded-xl bg-black pb-[56.25%] shadow-2xl md:rounded-3xl">
             <iframe
                 key={embedUrl} // evita remount desnecessário
                 src={embedUrl}

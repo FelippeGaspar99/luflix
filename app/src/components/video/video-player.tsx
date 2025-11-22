@@ -53,7 +53,7 @@ export function VideoPlayer({ videoId, url, initialProgress = 0, trackProgress =
   }, [shouldPlay]);
 
   const renderLocalVideo = () => (
-    <div className="aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl">
+    <div className="aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl md:rounded-3xl">
       <video
         ref={localVideoRef}
         src={playableUrl}
@@ -114,7 +114,7 @@ export function VideoPlayer({ videoId, url, initialProgress = 0, trackProgress =
     embedUrlObj.searchParams.set("playsinline", "1");
 
     return (
-      <div className="aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl">
+      <div className="aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl md:rounded-3xl">
         <iframe
           src={embedUrlObj.toString()}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -139,7 +139,7 @@ export function VideoPlayer({ videoId, url, initialProgress = 0, trackProgress =
   }
 
   return (
-    <div className="aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl">
+    <div className="aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl md:rounded-3xl">
       <ReactPlayer
         url={playableUrl}
         controls
