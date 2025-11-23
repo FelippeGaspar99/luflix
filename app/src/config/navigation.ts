@@ -6,9 +6,7 @@ export const navLinks = {
     { label: "Usuários", href: "/admin/users" },
   ],
   employee: [
-    { label: "Início", href: "/employee" },
-    { label: "Módulos", href: "/employee" },
-    { label: "Área de membros", href: "/members" },
+    { label: "Meus Cursos", href: "/employee" },
   ],
   member: [
     { label: "Meus Cursos", href: "/members" },

@@ -1,18 +1,21 @@
 import { requireEmployee } from "@/auth/guards";
 import { getModulesForEmployee } from "@/controllers/moduleController";
-import { getModuleProgress, getRecentVideos } from "@/controllers/progressController";
-import { getCertificatesForUser } from "@/controllers/certificateController";
-import { EmployeeDashboardView } from "@/views/employee/dashboard-view";
+import { getModuleProgress } from "@/controllers/progressController";
+import { ModuleCard } from "@/components/modules/module-card";
 
-interface PageProps {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}
-
-export default async function EmployeePage({ searchParams }: PageProps) {
+export default async function EmployeePage() {
   const session = await requireEmployee();
-  const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const search = typeof resolvedSearchParams?.search === "string" ? resolvedSearchParams.search : undefined;
-  const modules = await getModulesForEmployee(session.user.id, search);
+  const modules = await getModulesForEmployee(session.user.id);
+
+  if (modules.length === 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#05070e] to-[#0b1224] px-6 text-center text-slate-300">
+        <div className="rounded-3xl border border-slate-800/70 bg-slate-900/70 px-10 py-12 text-lg">
+          Nenhum curso liberado para você ainda.
+        </div>
+      </div>
+    );
+  }
 
   const modulesWithProgress = await Promise.all(
     modules.map(async (module: any) => {
@@ -23,19 +26,34 @@ export default async function EmployeePage({ searchParams }: PageProps) {
         description: module.description,
         coverUrl: module.coverUrl,
         videosCount: module.videos?.length ?? 0,
-        progress: progress.percentage,
+        progress: Math.round(progress.percentage),
       };
     }),
   );
 
-  const recentVideos = await getRecentVideos(session.user.id);
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#05070e] to-[#0b1224] px-4 py-10">
+      <div className="mx-auto max-w-6xl space-y-6">
+        <div className="space-y-2">
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Área de membros</p>
+          <h1 className="text-3xl font-semibold text-white">Meus cursos</h1>
+          <p className="text-slate-400">Aqui estão apenas os cursos liberados para você. Escolha um para assistir.</p>
+        </div>
 
-  const certificatesFromDb = await getCertificatesForUser(session.user.id);
-  const certificates = certificatesFromDb.map((certificate) => ({
-    id: certificate.id,
-    moduleTitle: certificate.module.title,
-    issuedAt: certificate.issuedAt.toLocaleDateString("pt-BR"),
-  }));
-
-  return <EmployeeDashboardView modules={modulesWithProgress} certificates={certificates} recentVideos={recentVideos} />;
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {modulesWithProgress.map((module) => (
+            <ModuleCard
+              key={module.id}
+              href={`/modules/${module.id}`}
+              title={module.title}
+              description={module.description}
+              coverUrl={module.coverUrl}
+              videosCount={module.videosCount}
+              progress={module.progress}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
