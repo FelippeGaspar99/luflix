@@ -1,7 +1,7 @@
 import { requireEmployee } from "@/auth/guards";
 import { getModulesForEmployee } from "@/controllers/moduleController";
 import { getModuleProgress } from "@/controllers/progressController";
-import { ModuleCarousel } from "@/components/modules/module-carousel";
+import { ModuleGallery } from "@/views/members/module-gallery";
 
 export default async function EmployeePage() {
   const session = await requireEmployee();
@@ -28,6 +28,7 @@ export default async function EmployeePage() {
         videosCount: module.videos?.length ?? 0,
         progress: Math.round(progress.percentage),
         createdAt: module.createdAt?.toISOString?.() ?? null,
+        videos: module.videos?.map((video: any) => ({ title: video.title })) ?? [],
       };
     }),
   );
@@ -35,7 +36,7 @@ export default async function EmployeePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#05070e] to-[#0b1224] px-4 py-10">
       <div className="mx-auto max-w-6xl space-y-6">
-        <ModuleCarousel
+        <ModuleGallery
           modules={modulesWithProgress}
           baseHref="/modules"
           heading="Meus cursos"

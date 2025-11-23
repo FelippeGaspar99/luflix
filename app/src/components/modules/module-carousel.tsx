@@ -44,7 +44,7 @@ export function ModuleCarousel({ modules, baseHref, heading, subheading }: Modul
   const scroll = (direction: "left" | "right") => {
     const node = scrollRef.current;
     if (!node) return;
-    const amount = node.clientWidth * 0.85;
+    const amount = node.clientWidth * 0.9;
     node.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
   };
 
