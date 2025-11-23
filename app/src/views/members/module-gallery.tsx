@@ -48,7 +48,7 @@ export function ModuleGallery({ modules, baseHref, heading, subheading }: Module
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar módulos ou vídeos..."
-            className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-12 py-4 text-base text-slate-100 placeholder:text-slate-500 shadow-inner focus:border-rose-500 focus:outline-none"
+            className="w-full rounded-2xl border border-slate-800 bg-slate-900 pl-14 pr-4 py-4 text-base text-slate-100 placeholder:text-slate-500 shadow-inner focus:border-rose-500 focus:outline-none"
           />
         </div>
       </div>
