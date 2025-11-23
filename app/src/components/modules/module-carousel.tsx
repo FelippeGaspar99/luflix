@@ -81,7 +81,7 @@ export function ModuleCarousel({ modules, baseHref, heading, subheading }: Modul
 
         <div ref={scrollRef} className="flex gap-4 overflow-hidden px-10">
           {sortedModules.map((module) => (
-            <div key={module.id} className="w-[260px] shrink-0">
+            <div key={module.id} className="w-[340px] shrink-0">
               <ModuleCard
                 href={`${baseHref}/${module.id}`}
                 title={module.title}

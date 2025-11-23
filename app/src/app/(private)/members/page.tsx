@@ -1,6 +1,6 @@
 import { getSession } from "@/auth/session";
 import { getModulesForMembers } from "@/controllers/moduleController";
-import { ModuleCarousel } from "@/components/modules/module-carousel";
+import { ModuleGallery } from "@/views/members/module-gallery";
 
 export default async function MembersPage() {
   const session = await getSession();
@@ -26,17 +26,13 @@ export default async function MembersPage() {
     coverUrl: module.coverUrl,
     videosCount: module.videos?.length ?? 0,
     createdAt: module.createdAt?.toISOString?.() ?? null,
+    videos: module.videos?.map((video: any) => ({ title: video.title })) ?? [],
   }));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#020617] to-[#0f172a] px-4 py-10">
       <div className="mx-auto max-w-6xl space-y-6">
-        <ModuleCarousel
-          modules={moduleCards}
-          baseHref="/members/modules"
-          heading="Área de membros"
-          subheading="Escolha um módulo para assistir; cada curso abre com player e playlist completos."
-        />
+        <ModuleGallery modules={moduleCards} />
       </div>
     </div>
   );
