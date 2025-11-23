@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "*.googleusercontent.com",
+      },
+      {
+        protocol: "https",
         hostname: "msgsndr-private.storage.googleapis.com",
       },
     ],
