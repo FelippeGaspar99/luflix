@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Play, Film } from "lucide-react";
+import { cn } from "@/lib/cn";
 import { Progress } from "@/components/ui/progress";
 
 interface ModuleCardProps {
@@ -10,6 +11,7 @@ interface ModuleCardProps {
   coverUrl: string;
   videosCount: number;
   progress?: number;
+  className?: string;
 }
 
 export function ModuleCard({
@@ -19,11 +21,15 @@ export function ModuleCard({
   coverUrl,
   videosCount,
   progress,
+  className,
 }: ModuleCardProps) {
   return (
     <Link
       href={href}
-      className="group relative block overflow-hidden rounded-xl bg-slate-900/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20"
+      className={cn(
+        "group relative block overflow-hidden rounded-xl bg-slate-900/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20",
+        className,
+      )}
     >
       {/* Cover Image */}
       <div className="relative aspect-video w-full overflow-hidden bg-slate-800">

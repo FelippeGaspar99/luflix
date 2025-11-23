@@ -1,7 +1,7 @@
 import { requireEmployee } from "@/auth/guards";
 import { getModulesForEmployee } from "@/controllers/moduleController";
 import { getModuleProgress } from "@/controllers/progressController";
-import { ModuleCard } from "@/components/modules/module-card";
+import { ModuleCarousel } from "@/components/modules/module-carousel";
 
 export default async function EmployeePage() {
   const session = await requireEmployee();
@@ -27,6 +27,7 @@ export default async function EmployeePage() {
         coverUrl: module.coverUrl,
         videosCount: module.videos?.length ?? 0,
         progress: Math.round(progress.percentage),
+        createdAt: module.createdAt?.toISOString?.() ?? null,
       };
     }),
   );
@@ -34,25 +35,12 @@ export default async function EmployeePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#05070e] to-[#0b1224] px-4 py-10">
       <div className="mx-auto max-w-6xl space-y-6">
-        <div className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Área de membros</p>
-          <h1 className="text-3xl font-semibold text-white">Meus cursos</h1>
-          <p className="text-slate-400">Aqui estão apenas os cursos liberados para você. Escolha um para assistir.</p>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {modulesWithProgress.map((module) => (
-            <ModuleCard
-              key={module.id}
-              href={`/modules/${module.id}`}
-              title={module.title}
-              description={module.description}
-              coverUrl={module.coverUrl}
-              videosCount={module.videosCount}
-              progress={module.progress}
-            />
-          ))}
-        </div>
+        <ModuleCarousel
+          modules={modulesWithProgress}
+          baseHref="/modules"
+          heading="Meus cursos"
+          subheading="Aqui estão apenas os cursos liberados para você. Escolha um para assistir."
+        />
       </div>
     </div>
   );
