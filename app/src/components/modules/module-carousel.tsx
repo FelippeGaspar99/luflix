@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ModuleCard } from "@/components/modules/module-card";
 
@@ -25,7 +25,15 @@ interface ModuleCarouselProps {
 export function ModuleCarousel({ modules, baseHref, heading, subheading, showProgress = true }: ModuleCarouselProps) {
   const [sortBy, setSortBy] = useState<"recent" | "title" | "progress">("recent");
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const hasProgress = modules.some((module) => typeof module.progress === "number");
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const sortedModules = useMemo(() => {
     const list = [...modules];
@@ -71,39 +79,58 @@ export function ModuleCarousel({ modules, baseHref, heading, subheading, showPro
       </div>
 
       <div className="relative">
-        <button
-          type="button"
-          onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-800 bg-slate-900/90 p-2 text-slate-100 shadow-xl transition hover:border-slate-600"
-          aria-label="Anterior"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </button>
+        {isMobile ? null : (
+          <button
+            type="button"
+            onClick={() => scroll("left")}
+            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-800 bg-slate-900/90 p-2 text-slate-100 shadow-xl transition hover:border-slate-600"
+            aria-label="Anterior"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+        )}
 
-        <div ref={scrollRef} className="flex gap-4 overflow-hidden px-10">
-          {sortedModules.map((module) => (
-            <div key={module.id} className="w-[340px] shrink-0">
-              <ModuleCard
-                href={`${baseHref}/${module.id}`}
-                title={module.title}
-                description={module.description}
-                coverUrl={module.coverUrl}
-                videosCount={module.videosCount}
-                progress={module.progress}
-                showProgress={showProgress}
-              />
-            </div>
-          ))}
-        </div>
+        {isMobile ? (
+          <div className="grid gap-4 sm:grid-cols-2">{sortedModules.map((module) => (
+            <ModuleCard
+              key={module.id}
+              href={`${baseHref}/${module.id}`}
+              title={module.title}
+              description={module.description}
+              coverUrl={module.coverUrl}
+              videosCount={module.videosCount}
+              progress={module.progress}
+              showProgress={showProgress}
+            />
+          ))}</div>
+        ) : (
+          <div ref={scrollRef} className="flex gap-4 overflow-hidden px-10">
+            {sortedModules.map((module) => (
+              <div key={module.id} className="w-[340px] shrink-0">
+                <ModuleCard
+                  href={`${baseHref}/${module.id}`}
+                  title={module.title}
+                  description={module.description}
+                  coverUrl={module.coverUrl}
+                  videosCount={module.videosCount}
+                  progress={module.progress}
+                  showProgress={showProgress}
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
-        <button
-          type="button"
-          onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-800 bg-slate-900/90 p-2 text-slate-100 shadow-xl transition hover:border-slate-600"
-          aria-label="Próximo"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
+        {isMobile ? null : (
+          <button
+            type="button"
+            onClick={() => scroll("right")}
+            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-800 bg-slate-900/90 p-2 text-slate-100 shadow-xl transition hover:border-slate-600"
+            aria-label="Próximo"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        )}
       </div>
     </div>
   );
