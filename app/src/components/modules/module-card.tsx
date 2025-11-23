@@ -12,6 +12,7 @@ interface ModuleCardProps {
   videosCount: number;
   progress?: number;
   className?: string;
+  showProgress?: boolean;
 }
 
 export function ModuleCard({
@@ -22,7 +23,10 @@ export function ModuleCard({
   videosCount,
   progress,
   className,
+  showProgress = true,
 }: ModuleCardProps) {
+  const shouldShowProgress = showProgress && progress !== undefined;
+
   return (
     <Link
       href={href}
@@ -66,7 +70,7 @@ export function ModuleCard({
           {description}
         </p>
 
-        {progress !== undefined && (
+        {shouldShowProgress && (
           <div className="space-y-2 pt-2">
             <div className="flex items-center justify-between text-xs">
               <span className="text-slate-500">Progresso</span>

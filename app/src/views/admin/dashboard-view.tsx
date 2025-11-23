@@ -55,6 +55,7 @@ export function AdminDashboardView({ modules }: Props) {
               description={module.description}
               coverUrl={module.coverUrl}
               videosCount={module.videosCount}
+              showProgress={false}
             />
           ))}
         </div>

@@ -20,9 +20,10 @@ interface ModuleGalleryProps {
   baseHref: string;
   heading?: string;
   subheading?: string;
+  showProgress?: boolean;
 }
 
-export function ModuleGallery({ modules, baseHref, heading, subheading }: ModuleGalleryProps) {
+export function ModuleGallery({ modules, baseHref, heading, subheading, showProgress = true }: ModuleGalleryProps) {
   const [query, setQuery] = useState("");
   const normalizedQuery = query.trim().toLowerCase();
 
@@ -63,6 +64,7 @@ export function ModuleGallery({ modules, baseHref, heading, subheading }: Module
           baseHref={baseHref}
           heading={heading}
           subheading={subheading}
+          showProgress={showProgress}
         />
       )}
     </div>

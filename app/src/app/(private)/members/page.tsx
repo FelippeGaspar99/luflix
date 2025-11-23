@@ -37,6 +37,7 @@ export default async function MembersPage() {
           baseHref="/members/modules"
           heading="Área de membros"
           subheading="Escolha um módulo para assistir; cada curso abre com player e playlist completos."
+          showProgress={false}
         />
       </div>
     </div>

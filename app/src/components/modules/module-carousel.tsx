@@ -19,9 +19,10 @@ interface ModuleCarouselProps {
   baseHref: string;
   heading?: string;
   subheading?: string;
+  showProgress?: boolean;
 }
 
-export function ModuleCarousel({ modules, baseHref, heading, subheading }: ModuleCarouselProps) {
+export function ModuleCarousel({ modules, baseHref, heading, subheading, showProgress = true }: ModuleCarouselProps) {
   const [sortBy, setSortBy] = useState<"recent" | "title" | "progress">("recent");
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const hasProgress = modules.some((module) => typeof module.progress === "number");
@@ -89,6 +90,7 @@ export function ModuleCarousel({ modules, baseHref, heading, subheading }: Modul
                 coverUrl={module.coverUrl}
                 videosCount={module.videosCount}
                 progress={module.progress}
+                showProgress={showProgress}
               />
             </div>
           ))}
